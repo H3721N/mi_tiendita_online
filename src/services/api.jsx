@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiTienda = axios.create({
-   baseURL: 'http://localhost:3000/desafio_web_360_backend',
+   baseURL: 'http://localhost:3000/api/v1',
     timeout: 10000,
 });
 
@@ -22,13 +22,16 @@ apiTienda.interceptors.request.use((config) => {
 
 export const login = async (data) => {
     try {
-        return await apiTienda().post('/auth/login', data)
+        console.log('Sending login request with data:', data);
+        const response = await apiTienda.post('/login', data);
+        return response;
     } catch (e) {
+        console.error('Login request failed:', e.response ? e.response.data : e.message);
         return {
             error: true,
             e
-        }
+        };
     }
-}
+};
 
 export default apiTienda;
