@@ -1,0 +1,166 @@
+.wrapper {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10vh;
+    border-radius: 4vh 5vh;
+    color: #ffffff;
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 1.2rem;
+    padding: 0 40px 0 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3vh;
+}
+
+.input-box input::placeholder {
+    color: #ffffff;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    pointer-events: none;
+}
+
+.wrapper .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 10px 0;
+}
+
+remember-forgot input label {
+    accent-color: #ffffff;
+    margin-right: 4px;
+}
+
+.remember-forgot a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.remember-forgot a:hover {
+    text-decoration: underline;
+}
+
+.wrapper button {
+    width: 100%;
+    height: 50px;
+    border: none;
+    outline: none;
+    background: #ffffff;
+    color: #000000;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 3vh;
+}
+
+.wrapper .register-link {
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.register-link a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    font-family: "Kanit", serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-size: cover;
+    animation: changeBackground 25s infinite;
+}
+
+@keyframes changeBackground {
+    0% { background: url('../../public/img/img_1.jpg') no-repeat center center / cover; }
+    20% { background: url('../../public/img/img_2.jpg') no-repeat center center / cover; }
+    40% { background: url('../../public/img/img_3.jpg') no-repeat center center / cover; }
+    60% { background: url('../../public/img/img_4.jpg') no-repeat center center / cover; }
+    80% { background: url('../../public/img/img_5.jpg') no-repeat center center / cover; }
+    100% { background: url('../../public/img/img_1.jpg') no-repeat center center / cover; }
+}
+
+code {
+    font-family: "Kanit", serif;
+}
+
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.dashboard-container ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    animation: cambio 30s infinite linear;
+}
+
+.dashboard-container ul li {
+    width: 100vw;
+    flex: 0 0 auto;
+}
+
+.dashboard-container ul li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0%;
+}
+
+@keyframes cambio {
+    0% { margin-left: 0; }
+    15% { margin-left: 0; }
+    20% { margin-left: -100%; }
+    40% { margin-left: -100%; }
+    45% { margin-left: -200%; }
+    65% { margin-left: -200%; }
+    70% { margin-left: -300%; }
+    100% { margin-left: -300%; }
+}
