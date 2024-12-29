@@ -1,6 +1,6 @@
-.wrapper {
+.login-wrapper {
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 10vh;
     border-radius: 4vh 5vh;
     color: #ffffff;
@@ -11,37 +11,37 @@ h1 {
     text-align: center;
 }
 
-.wrapper .input-box {
+.login-wrapper .login-input-box {
     position: relative;
     width: 100%;
-    height: 50px;
-    margin: 30px 0;
+    height: 40px;
+    margin: 40px 0;
+    color: #242eec;
 }
-.input-box {
+.login-input-box {
     position: relative;
-    width: 100%;
-    height: 50px;
+    height: 40px;
     margin: 30px 0;
 }
 
-.input-box input {
-    width: 100%;
+.login-input-box input {
+    width: 80%;
     height: 100%;
     background: transparent;
     border: none;
     outline: none;
-    color: #ffffff;
+    color: #242eec;
     font-size: 1.2rem;
     padding: 0 40px 0 10px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 3vh;
 }
 
-.input-box input::placeholder {
-    color: #ffffff;
+.login-input-box input::placeholder {
+    color: #212797;
 }
 
-.input-box .icon {
+.login-input-box .icon {
     position: absolute;
     right: 10px;
     top: 50%;
@@ -50,49 +50,48 @@ h1 {
     pointer-events: none;
 }
 
-.wrapper .remember-forgot {
+.login-wrapper .login-remember-forgot {
     display: flex;
     justify-content: space-between;
     font-size: 14.5px;
     margin: -15px 0 10px 0;
 }
 
-remember-forgot input label {
+.login-remember-forgot input label {
     accent-color: #ffffff;
     margin-right: 4px;
 }
 
-.remember-forgot a {
+.login-remember-forgot a {
+
     color: #ffffff;
     text-decoration: none;
 }
 
-.remember-forgot a:hover {
+.login-remember-forgot a:hover {
     text-decoration: underline;
 }
 
-.wrapper button {
+.login-button {
     width: 100%;
     height: 50px;
     border: none;
     outline: none;
-    background: #ffffff;
-    color: #000000;
     font-size: 1.2rem;
     cursor: pointer;
     border-radius: 3vh;
 }
 
-.wrapper .register-link {
+.login-wrapper .login-register-link {
     text-align: center;
     margin: 20px 0 15px;
 }
 
-.register-link a {
+.login-register-link a {
     color: #ffffff;
     text-decoration: none;
 }
 
-.register-link a:hover {
+.login-register-link a {
     text-decoration: underline;
 }

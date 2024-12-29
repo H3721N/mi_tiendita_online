@@ -4,6 +4,8 @@ import { LuCircleUser } from "react-icons/lu";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { useLogin } from '../../shared/hooks/useLogin';
 import { useForm } from 'react-hook-form';
+import {Checkbox, Input} from "@mui/joy";
+import Button from "@mui/joy/Button";
 
 export const LoginForm = () => {
     const { login, isLoading } = useLogin();
@@ -15,38 +17,38 @@ export const LoginForm = () => {
     });
 
     return (
-        <div className='wrapper'>
+        <div className='login-wrapper'>
             <form onSubmit={onSubmit}>
                 <h1>Login</h1>
-                <div className='input-box'>
-                    <input
-                        type='text'
-                        placeholder='Email'
-                        name='email'
-                        required
-                        {...register("email", {required: true})}
+                <div className='login-input-box'>
+                    <Input className="login-input-box"
+                        placeholder="Email"
+                        color="primary"
+                        variant="outlined"
+                        {...register("email", { required: true })}
                     />
                     <LuCircleUser className='icon'/>
                 </div>
-                <div className='input-box'>
-                    <input
-                        type='password'
-                        placeholder='Password'
-                        name='password'
-                        required
-                        {...register("password", {required: true})}
+                <div className='login-input-box'>
+                    <Input
+                        className="login-input-box"
+                        placeholder="Password"
+                        color="primary"
+                        variant="outlined"
+                        type="password"
+                        {...register("password", { required: true })}
                     />
                     <RiLockPasswordLine className='icon'/>
                 </div>
-                <div className='remember-forgot'>
-                    <label>
-                        <input type='checkbox'/> Remember me
-                    </label>
-                    <a href='#'>Forgot password?</a>
+                <div className='login-remember-forgot'>
+                    <Checkbox color="primary" className="login-remember-forgot"/>
+                    <a href='#' className='login-remember-forgot'>Forgot password?</a>
                 </div>
-                <button  type='submit'>Login</button>
-                <div className='register-link'>
-                    <p>No posees una cuenta? <a href="#">Registrate</a></p>
+                <Button type='submit' color="primary" className='login-button'>
+                    Login
+                </Button>
+                <div className='login-register-link'>
+                    <p>No posees una cuenta? <a href="/register">Registrate</a></p>
                 </div>
             </form>
         </div>
