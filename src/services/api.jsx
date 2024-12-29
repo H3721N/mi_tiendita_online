@@ -24,6 +24,7 @@ export const login = async (data) => {
     try {
         console.log('Sending login request with data:', data);
         const response = await apiTienda.post('/login', data);
+        localStorage.setItem('token', JSON.stringify(response.data.token));
         return response;
     } catch (e) {
         console.error('Login request failed:', e.response ? e.response.data : e.message);
