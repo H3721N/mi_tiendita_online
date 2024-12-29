@@ -1,19 +1,26 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login as loginRequest } from "../../services/api"
+import { login as loginRequest } from "../../services/api.jsx";
 import toast from 'react-hot-toast';
 
-const useLogin = () => {
+export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const login = async (email, password) => {
+        if (!email || !password) {
+            toast.error('Email and password are required');
+            return;
+        }
+
         setIsLoading(true);
 
-        const response = await loginRequest ({
+        const response = await loginRequest({
             email,
             password
         });
+
+        console.log(response);
 
         setIsLoading(false);
 
@@ -24,10 +31,18 @@ const useLogin = () => {
 
         const { userDetails } = response.data;
 
-        localStorage.setItem('userDetails', userDetails.email);
+        if (response.data && response.data.userDetails) {
+            const { userDetails } = response.data;
+            localStorage.setItem('userDetails', userDetails.email);
+            console.log(email);
+        } else {
+            toast.error('Invalid response from server');
+        }
 
-        navigate('/home', {state:{email}});
+        console.log(email);
 
-    }
-    return { login, isLoading }
-}
+        navigate('/home', { state: { email, password } });
+    };
+
+    return { login, isLoading };
+};
