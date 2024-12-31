@@ -19,7 +19,7 @@ export const LoginForm = () => {
     return (
         <div className='login-wrapper'>
             <form onSubmit={onSubmit}>
-                <h1>Login</h1>
+                <h1>Iniciar sesi$on</h1>
                 <div className='login-input-box'>
                     <Input className="login-input-box"
                         placeholder="Email"
