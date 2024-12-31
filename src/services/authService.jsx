@@ -1,0 +1,31 @@
+import apiTienda from "./api.jsx";
+
+
+export const login = async (data) => {
+    try {
+        console.log('Sending login request with data:', data);
+        const response = await apiTienda.post('/login', data);
+        localStorage.setItem('token', response.data.token);
+        return response;
+    } catch (e) {
+        console.error('Login request failed:', e.response ? e.response.data : e.message);
+        return {
+            error: true,
+            e
+        };
+    }
+};
+
+export const registerUser = async (data) => {
+    try {
+        console.log(data);
+        const response = await apiTienda.post('/clienteUsuario', data);
+        return response;
+    } catch (e) {
+        console.error('Register request failed:', e.response ? e.response.data : e.message);
+        return {
+            error: true,
+            e
+        };
+    }
+};
