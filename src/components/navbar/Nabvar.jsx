@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import './Navbar.css';
+import {Cart} from "../Cart/Cart.jsx";
 
 export default function ButtonAppBar() {
     return (
@@ -26,8 +27,11 @@ export default function ButtonAppBar() {
                         Mi tiendita online
                     </Typography>
                     <Button color="inherit">Login</Button>
+
                 </Toolbar>
-            </AppBar>
+
+                </AppBar>
+            <Cart/>
         </Box>
     );
 }
