@@ -25,7 +25,9 @@ export function Cart () {
                     </li>
                 </ul>
                 <button>
-                    <BsCartXFill />
+                    {
+
+                        <BsCartXFill/>}
                 </button>
             </aside>
         </>
