@@ -1,33 +1,62 @@
 import { FaCartPlus } from "react-icons/fa";
 import { BsCartXFill } from "react-icons/bs";
-import {useId} from "react";
+import { useEffect, useId } from "react";
+import './Cart.css';
+import { useCart } from "../../shared/hooks/useCart.js";
 
-export function Cart () {
-    const cartCheckboxId = useId()
+export function CartItem({ product, addToCart, decreaseFromCart }) {
+    console.log('CartItem rendered');
+    console.log('CartItem product:', product);
+
+    const base64Image = `data:image/jpeg;base64,${product.foto}`;
+
+    return (
+        <li>
+            <img src={base64Image} alt={product.marca}/>
+            <div>
+                <h3>{product.nombre}</h3>
+                <p>${product.precios}</p>
+            </div>
+            <footer>
+                <small onClick={addToCart}>
+                    Disponible: {product.stock} -
+                    Qty: {product.quantity}
+                </small>
+            </footer>
+            <button onClick={decreaseFromCart}>-</button>
+            <button onClick={addToCart} disabled={product.stock <= 1}>+</button>
+        </li>
+    );
+}
+
+export function Cart() {
+    const cartCheckboxId = useId();
+    const {cart, clearCart, addToCart, decreaseFromCart } = useCart();
+
+    useEffect(() => {
+        console.log('Cart updated:', cart);
+    }, [cart]);
+
     return (
         <>
             <label className='cart-button' htmlFor={cartCheckboxId}>
                 <FaCartPlus />
             </label>
-            <input id={cartCheckboxId} type='checkbox' hidden/>
+            <input id={cartCheckboxId} type='checkbox' hidden />
 
             <aside className='cart'>
                 <ul>
-                    <li>
-                        <img src='https://via.placeholder.com/150' alt='product'/>
-                        <div>
-                            <h3>Product name</h3>
-                            <p>$100.00</p>
-                        </div>
-                        <footer>
-                            Qty: 1
-                        </footer>
-                    </li>
+                    {cart.map(product => (
+                        <CartItem
+                            key={product.id}
+                            product={product}
+                            addToCart={() => addToCart(product)}
+                            decreaseFromCart={() => decreaseFromCart(product)}
+                        />
+                    ))}
                 </ul>
-                <button>
-                    {
-
-                        <BsCartXFill/>}
+                <button onClick={clearCart}>
+                    <BsCartXFill />
                 </button>
             </aside>
         </>
