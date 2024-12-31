@@ -5,34 +5,18 @@ const apiTienda = axios.create({
     timeout: 10000,
 });
 
-apiTienda.interceptors.request.use((config) => {
-    const userDetails = localStorage.getItem('token');
-    if (userDetails) {
-        try {
-            const token = JSON.parse(userDetails).token
-            config.headers.Authorization = `Bearer ${token}`
-        } catch (error) {
-            console.log('Error al obtener el token', error)
+apiTienda.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token'); // o desde donde obtengas el token
+        if (token) {
+            config.headers.Authorization = `${token}`;
         }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    return config
-}, (error) => {
-    return Promise.reject(error)
-})
+);
 
-export const login = async (data) => {
-    try {
-        console.log('Sending login request with data:', data);
-        const response = await apiTienda.post('/login', data);
-        localStorage.setItem('token', JSON.stringify(response.data.token));
-        return response;
-    } catch (e) {
-        console.error('Login request failed:', e.response ? e.response.data : e.message);
-        return {
-            error: true,
-            e
-        };
-    }
-};
 
 export default apiTienda;
