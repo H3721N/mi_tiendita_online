@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import * as yup from 'yup';
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
+import { useRegister} from "../../shared/hooks/useRegister.jsx";
 
 const inAnimation = keyframes`
   0% {
@@ -33,6 +34,7 @@ const outAnimation = keyframes`
 
 export const RegisterForm = () => {
     const [open, setOpen] = React.useState(false);
+    const { registerUser, isRegister } = useRegister();
     const schema = yup.object().shape({
         nombre: yup.string().max(75).required('El nombre es necesario'),
         telefono: yup.string().matches(/^\d+$/, 'El teléfono solo debe contener números').required(),
@@ -41,7 +43,7 @@ export const RegisterForm = () => {
         nombreComercial: yup.string('nombre comercial es necesario').max(345).required(),
         razonSocial: yup.string().max(245).required('razon social es necesaria'),
         direccionEntrega: yup.string().max(45).required('direccion de entrega es necesaria'),
-        password: yup.string().min(6).max(100).required('contraseña es necesaria'),
+        password: yup.string().min(6, "Debe ingresar al menos 6 caracteres").max(100).required('contraseña es necesaria'),
         confirmPassword: yup.string().min(6, 'La contraseña debe tener al menos 6 caracteres').
         max(100).oneOf([yup.ref('password'), null],
             'Las contraseñas deben coincidir').required('contraseña es necesaria'),
@@ -51,6 +53,7 @@ export const RegisterForm = () => {
         handleSubmit,
         formState:{errors} } = useForm({
          resolver: yupResolver(schema),
+        mode: 'all',
     });
 
     const animationDuration = 600;
@@ -65,6 +68,8 @@ export const RegisterForm = () => {
 
     const onSubmit = ( (data) => {
         console.log(data);
+        registerUser(data.nombre, data.telefono, data.email, data.fechaNacimiento, data.nombreComercial,
+            data.razonSocial, data.direccionEntrega, data.password, data.confirmPassword);
     })
 
     return(
@@ -78,7 +83,7 @@ export const RegisterForm = () => {
                             <Input color="primary" variant="outlined" className="input-box"
                                    {...register("nombre", { required: true })}
                             />
-                            {errors.nombre && <p>{errors.nombre.message}</p>}
+                            {errors.nombre && <p className='msg-error'>{errors.nombre.message}</p>}
                         </div>
                         <div className='col-lg-5'>
                             <FormLabel className='label'>T&eacute;lefono</FormLabel>
@@ -94,7 +99,7 @@ export const RegisterForm = () => {
                                 }}
                                 {...register("telefono", { required: true })}
                             />
-                            {errors.telefono && <p>{errors.telefono.message}</p>}
+                            {errors.telefono && <p className='msg-error'>{errors.telefono.message}</p>}
                         </div>
                         <div className='col-lg-7'>
                             <FormLabel className='label'>Correo electr&oacute;nico</FormLabel>
@@ -102,7 +107,7 @@ export const RegisterForm = () => {
                                    className="input-box"
                                   {...register("email", { required: true })}
                             />
-                            {errors.email && <p>{errors.email.message}</p>}
+                            {errors.email && <p className='msg-error'>{errors.email.message}</p>}
                         </div>
                         <div className='col-lg-5'>
                             <FormLabel className='label'>Fecha de nacimiento</FormLabel>
@@ -120,7 +125,7 @@ export const RegisterForm = () => {
                                 }}
                                 {...register("fechaNacimiento", { required: true })}
                             />
-                            {errors.fechaNacimiento && <p>{errors.fechaNacimiento.message}</p>}
+                            {errors.fechaNacimiento && <p className='msg-error'>{errors.fechaNacimiento.message}</p>}
                         </div>
                     </div>
                     <div className='row'>
@@ -129,14 +134,14 @@ export const RegisterForm = () => {
                             <Input variant="outlined" className="input-box"
                                    {...register("nombreComercial", { required: true })}
                             />
-                            {errors.nombreComercial && <p>{errors.nombreComercial.message}</p>}
+                            {errors.nombreComercial && <p className='msg-error'>{errors.nombreComercial.message}</p>}
                         </div>
                         <div className='col-lg-5'>
                             <FormLabel className='label'>Raz&oacute;n Social</FormLabel>
                             <Input variant="outlined" className="input-box"
                                       {...register("razonSocial", { required: true })}
                             />
-                            {errors.razonSocial && <p>{errors.razonSocial.message}</p>}
+                            {errors.razonSocial && <p className='msg-error'>{errors.razonSocial.message}</p>}
                         </div>
                     </div>
                     <div className='row'>
@@ -145,7 +150,7 @@ export const RegisterForm = () => {
                             <Input variant="outlined" className="input-box"
                                    {...register("direccionEntrega", { required: true })}
                             />
-                            {errors.direccionEntrega && <p>{errors.direccionEntrega.message}</p>}
+                            {errors.direccionEntrega && <p className='msg-error'>{errors.direccionEntrega.message}</p>}
                         </div>
 
                     </div>
@@ -157,7 +162,7 @@ export const RegisterForm = () => {
                                        type='password'
                                        {...register("password", { required: true })}
                                 />
-                                {errors.password && <p>{errors.password.message}</p>}
+                                {errors.password && <p className='msg-error'>{errors.password.message}</p>}
                             </div>
                             <div className='col-lg-12'>
                                 <FormLabel className='label'>Confirmar Contraseña</FormLabel>
@@ -167,7 +172,7 @@ export const RegisterForm = () => {
                                        {...register("confirmPassword", { required: true })}
                                 />
                             </div>
-                            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+                            {errors.confirmPassword && <p className='msg-error'>{errors.confirmPassword.message}</p>}
                         </div>
 
                     </div>

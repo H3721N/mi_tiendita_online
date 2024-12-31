@@ -1,7 +1,7 @@
 .wrapper {
     width: 100vh;
     background-color: rgba(0, 0, 0, 0.9);
-    padding: 10vh;
+    padding: 5vh;
     border-radius: 4vh 5vh;
     color: #ffffff;
 }
@@ -26,7 +26,13 @@ h1 {
 }
 
 .row .label{
-    color: #242eec;
+    color: #ffffff;
+}
+
+.msg-error {
+    color: red;
+    font-size: 0.8rem;
+    margin: 10px 0;
 }
 
 .wrapper .input-box {
