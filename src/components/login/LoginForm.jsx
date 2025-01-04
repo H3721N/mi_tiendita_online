@@ -12,7 +12,6 @@ export const LoginForm = () => {
     const { register, handleSubmit } = useForm();
 
     const onSubmit = handleSubmit( (data) => {
-        console.log(data);
         login(data.email, data.password);
     });
 

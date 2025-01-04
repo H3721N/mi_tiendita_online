@@ -67,7 +67,6 @@ export const RegisterForm = () => {
     };
 
     const onSubmit = ( (data) => {
-        console.log(data);
         registerUser(data.nombre, data.telefono, data.email, data.fechaNacimiento, data.nombreComercial,
             data.razonSocial, data.direccionEntrega, data.password, data.confirmPassword);
     })
