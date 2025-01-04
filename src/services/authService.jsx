@@ -3,7 +3,6 @@ import apiTienda from "./api.jsx";
 
 export const login = async (data) => {
     try {
-        console.log('Sending login request with data:', data);
         const response = await apiTienda.post('/login', data);
         localStorage.setItem('token', response.data.token);
         return response;
@@ -18,7 +17,6 @@ export const login = async (data) => {
 
 export const registerUser = async (data) => {
     try {
-        console.log(data);
         const response = await apiTienda.post('/clienteUsuario', data);
         return response;
     } catch (e) {
