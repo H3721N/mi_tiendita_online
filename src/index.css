@@ -5,24 +5,30 @@
     padding: 0;
     box-sizing: border-box;
 }
+
 body {
     margin: 0;
     font-family: "Kanit", serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    #display: flex;
+    #justify-content: center;
+    #align-items: center;
     min-height: 100vh;
     background-size: cover;
     animation: changeBackground 25s infinite;
+    padding-top: 50px; /* Ensure content is not hidden behind the navbar */
+
+    display: block; /* Cambia flex a block */
+    justify-content: unset;
+    align-items: unset;
 }
 
 @keyframes changeBackground {
-    0% { background: url('../../public/img/img_1.jpg') no-repeat center center / cover; }
-    20% { background: url('../../public/img/img_2.jpg') no-repeat center center / cover; }
-    40% { background: url('../../public/img/img_3.jpg') no-repeat center center / cover; }
-    60% { background: url('../../public/img/img_4.jpg') no-repeat center center / cover; }
-    80% { background: url('../../public/img/img_5.jpg') no-repeat center center / cover; }
-    100% { background: url('../../public/img/img_1.jpg') no-repeat center center / cover; }
+    0% { background: url('/img/img_1.jpg') no-repeat center center / cover; }
+    20% { background: url('/img/img_2.jpg') no-repeat center center / cover; }
+    40% { background: url('/img/img_3.jpg') no-repeat center center / cover; }
+    60% { background: url('/img/img_4.jpg') no-repeat center center / cover; }
+    80% { background: url('/img/img_5.jpg') no-repeat center center / cover; }
+    100% { background: url('/img/img_1.jpg') no-repeat center center / cover; }
 }
 
 code {
@@ -52,7 +58,7 @@ code {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 0%;
+    border-radius: 0;
 }
 
 @keyframes cambio {
@@ -64,4 +70,23 @@ code {
     65% { margin-left: -200%; }
     70% { margin-left: -300%; }
     100% { margin-left: -300%; }
+}
+
+.navbar-main {
+    position: fixed; /* Ensure the navbar is fixed at the top */
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure the navbar is above other elements */
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    font-size: 0.5rem; /* Adjust font size */
+    padding: 0.2rem; /* Adjust padding */
+}
+
+.navbar-main .MuiTypography-root {
+    font-size: 1rem; /* Adjust font size for Typography component */
+    width: 100%;
+}
+
+.navbar-main .MuiButton-root {
+    font-size: 0.9rem; /* Adjust font size for Button component */
 }
