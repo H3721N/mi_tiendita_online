@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { CartProvider } from './context/cart.jsx';
-import './App.css';
+import './index.css';
+import ButtonAppBar from "./components/navbar/Nabvar.jsx";
 
 ReactDOM.render(
     <React.StrictMode>
