@@ -41,8 +41,6 @@ export const CartProvider = ({ children }) => {
         });
     };
 
-    console.log(cart);
-
     const removeCart = product => {
         setCart(prevState => prevState.filter(item => item.id !== product.id));
     }

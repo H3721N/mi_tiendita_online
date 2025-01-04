@@ -3,10 +3,10 @@ import { BsCartXFill } from "react-icons/bs";
 import { useEffect, useId } from "react";
 import './Cart.css';
 import { useCart } from "../../shared/hooks/useCart.js";
+import { useConfirmPurchase } from "../../shared/hooks/useConfirmPurchase.jsx";
 
 export function CartItem({ product, addToCart, decreaseFromCart }) {
-    console.log('CartItem rendered');
-    console.log('CartItem product:', product);
+
 
     const base64Image = `data:image/jpeg;base64,${product.foto}`;
 
@@ -32,10 +32,12 @@ export function CartItem({ product, addToCart, decreaseFromCart }) {
 export function Cart() {
     const cartCheckboxId = useId();
     const {cart, clearCart, addToCart, decreaseFromCart } = useCart();
+    const { handleConfirmPurchase, loading, error } = useConfirmPurchase();
 
     useEffect(() => {
         console.log('Cart updated:', cart);
     }, [cart]);
+
 
     return (
         <>
@@ -56,7 +58,10 @@ export function Cart() {
                     ))}
                 </ul>
                 <button onClick={clearCart}>
-                    <BsCartXFill />
+                    <BsCartXFill/>
+                </button>
+                <button onClick={() => handleConfirmPurchase(cart)} disabled={loading}>
+                    Confirmar Compra
                 </button>
             </aside>
         </>
