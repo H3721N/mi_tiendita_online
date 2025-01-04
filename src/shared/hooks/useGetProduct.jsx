@@ -18,7 +18,6 @@ export const useGetProduct = () => {
                 setLoading(false);
             }
         };
-        console.log('token:', localStorage.getItem('token'));
         fetchProducts();
     }, []);
 

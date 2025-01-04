@@ -7,6 +7,15 @@ export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
+    const decodeJWT = (token) => {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+    };
+
     const login = async (email, password) => {
         if (!email || !password) {
             toast.error('Email and password are required');
@@ -20,7 +29,6 @@ export const useLogin = () => {
             password
         });
 
-        console.log(response);
 
         setIsLoading(false);
 
@@ -29,19 +37,24 @@ export const useLogin = () => {
             return;
         }
 
-        const { userDetails } = response.data;
+        const token = response.data.token;
 
-        if (response.data && response.data.userDetails) {
-            const { userDetails } = response.data;
-            localStorage.setItem('userDetails', userDetails.email);
-            console.log(email);
-        } else {
-            toast.error('Invalid response from server');
+        if (!token) {
+            toast.error('Token is undefined');
+            return;
         }
 
-        console.log(email);
+        localStorage.setItem('token', token);
 
-        navigate('/home', { state: { email, password } });
+        const decodedToken = decodeJWT(token);
+
+        const userRole = decodedToken.userRol;
+
+        if (userRole === 'Admin') {
+            navigate('/orden', { state: { email, password } });
+        } else {
+            navigate('/home', { state: { email, password } });
+        }
     };
 
     return { login, isLoading };
