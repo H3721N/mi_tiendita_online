@@ -77,6 +77,7 @@ export default function ButtonAppBar() {
                             <>
                                 <MenuItem onClick={() => handleMenuItemClick('/users')}>Usuarios</MenuItem>
                                 <MenuItem onClick={() => handleMenuItemClick('/product')}>Productos</MenuItem>
+                                <MenuItem onClick={() => handleMenuItemClick('/category')}>Categoria</MenuItem>
                             </>
                         )}
                     </Menu>

@@ -63,3 +63,37 @@ export const getProductByPriceRange = async (minPrice, maxPrice) => {
         console.error("Error:", error);
     }
 }
+
+export const getCatergoryWithPage = async (page, size) => {
+    try {
+        const response = await apiTienda.get('/categoriaProductoPage', {
+            params: {
+                page,
+                size
+            }
+        });
+        console.log('response:', response.data);
+        return response.data;
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+export const postCategory = async (categoryData) => {
+    try {
+        const response = await apiTienda.post('/categoriaProducto', categoryData);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+export const updateCategory = async (categoryId, categoryData) => {
+    try {
+        const response = await apiTienda.put(`/categoriaProducto/${categoryId}`, categoryData);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}

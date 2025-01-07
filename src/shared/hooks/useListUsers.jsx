@@ -29,5 +29,7 @@ export const useListUsers = (page, rowsPerPage) => {
         fetchUsers();
     }, [page, rowsPerPage]);
 
+    console.log('users:', users);
+
     return { users, loading, error, total };
 }

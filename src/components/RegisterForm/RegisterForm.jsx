@@ -40,7 +40,16 @@ export const RegisterForm = () => {
         nombre: yup.string().max(75).required('El nombre es necesario'),
         telefono: yup.string().matches(/^\d+$/, 'El teléfono solo debe contener números').required(),
         email: yup.string().email('email invalido').max(50).required('email es necesario'),
-        fechaNacimiento: yup.string().required('feche de nacimiento es necesaria'),
+        fechaNacimiento: yup.date().required('fecha de nacimiento es necesaria').test('is-18', 'Debes tener al menos 18 años', function(value) {
+            const today = new Date();
+            const birthDate = new Date(value);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age >= 18;
+        }),
         nombreComercial: yup.string('nombre comercial es necesario').max(345).required(),
         razonSocial: yup.string().max(245).required('razon social es necesaria'),
         direccionEntrega: yup.string().max(45).required('direccion de entrega es necesaria'),
@@ -119,7 +128,7 @@ export const RegisterForm = () => {
                                 slotProps={{
                                     input: {
                                         placeholder: 'A placeholder',
-                                        min: '2006-12-28',
+                                        min: '',
                                         max: new Date().toISOString().split('T')[0].split('-').reverse().join('-'),
                                     },
                                 }}
