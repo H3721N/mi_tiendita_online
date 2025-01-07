@@ -12,23 +12,30 @@ import Typography from "@mui/material/Typography";
 import Button from '@mui/material/Button';
 import { useOrdenById } from '../../shared/hooks/useordenDetalleById';
 import {Grid} from "@mui/joy";
+import { useRechazarOrden } from '../../shared/hooks/useRechazarOrden';
+import { useEntregaOrden } from '../../shared/hooks/useEntregaOrden';
+import { FcViewDetails } from "react-icons/fc";
+import { LuDelete } from "react-icons/lu";
+import { AiOutlineDeliveredProcedure } from "react-icons/ai";
+
+
 
 const getColumnsByRole = (role) => {
     const commonColumns = [
         { id: 'id', label: 'ID de Orden' },
         { id: 'direccion', label: 'Dirección' },
         { id: 'telefono', label: 'Teléfono' },
-        { id: 'fechaEntrega', label: 'Fecha de Entrega' },
         { id: 'total', label: 'Total de la Orden', align: 'right', format: (value) => value.toFixed(2) },
+        { id: 'estado', label: 'Estado' },
+        { id: 'negar', label: '' }
     ];
 
-    if (role === 'Admin') {
+    if (role === 'operador') {
         return [
             { id: 'id', label: 'ID de Orden' },
             { id: 'nombre', label: 'Nombre Completo' },
             { id: 'email', label: 'Correo Electrónico' },
             ...commonColumns.slice(1),
-            { id: 'negar', label: 'Botón' }
         ];
     }
 
@@ -47,15 +54,23 @@ const decodeJWT = (token) => {
     return JSON.parse(jsonPayload);
 };
 
-const decodedToken = decodeJWT(localStorage.getItem('token'));
-const columns = getColumnsByRole(decodedToken.userRol);
+const token = localStorage.getItem('token');
+
+const decodedToken = decodeJWT(token);
+let columns = [];
+if (decodedToken) {
+    columns = getColumnsByRole(decodedToken.userRol);
+}
+
 
 export default function OrdenList() {
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(105);
-    const [ordenes, loading, error] = useGetOrden(page, rowsPerPage);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [ordenes, loading, error, totalPage,totalOrden] = useGetOrden(page, rowsPerPage);
     const [selectedOrderId, setSelectedOrderId] = React.useState(null);
     const { orderDetail, isLoading: detailLoading, error: detailError } = useOrdenById(selectedOrderId);
+    const { rechazarOrden, isLoading: rejectLoading, error: rejectError } = useRechazarOrden();
+    const { entregar, isLoading: entregaLoading, error: entregaError } = useEntregaOrden();
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -70,6 +85,14 @@ export default function OrdenList() {
         setSelectedOrderId(id);
     };
 
+    const handleRejectClick = async (id) => {
+        await rechazarOrden(id);
+    };
+
+    const handleEntregaClick = async (id) => {
+        await entregar(id);
+    };
+
 
     if (loading || detailLoading) {
         return <div>Loading...</div>;
@@ -81,9 +104,9 @@ export default function OrdenList() {
 
     return (
         <Grid container spacing={2} className='row'
-              justifyContent="center" // Centrar horizontalmente
-              alignItems="flex-start" // Alineación vertical al inicio
-              sx={{ minHeight: '100vh', padding: 2 }} // Altura mínima y relleno
+              justifyContent="center"
+              alignItems="flex-start"
+              sx={{ minHeight: '100vh', padding: 2 }}
         >
             <Grid xs={12} sm={12} md={12} lg={12}>
                 <Paper sx={{width: '100%', overflow: 'hidden',
@@ -113,44 +136,67 @@ export default function OrdenList() {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {Array.isArray(ordenes) && ordenes
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((row) => {
-                                        return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                                {columns.map((column) => {
-                                                    const value = row[column.id];
-                                                    return (
-                                                        <TableCell key={column.id} align={column.align}>
-                                                            {column.id === 'negar' ? (
+                                {Array.isArray(ordenes) && ordenes.map((row) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                        {columns.map((column) => {
+                                            let value;
+                                            if (column.id === 'estado') {
+                                                value = row.Estado.nombre;
+                                            } else {
+                                                value = row[column.id];
+                                            }
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                    {column.id === 'negar' ? (
+                                                        <Grid container spacing={1}>
+                                                            <Grid item>
                                                                 <Button
                                                                     variant="contained"
                                                                     color="primary"
+                                                                    size="small"
                                                                     onClick={() => handleButtonClick(row.id)}
                                                                 >
-                                                                    Buscar Detalle
+                                                                    <FcViewDetails />
                                                                 </Button>
-                                                            ) : (
-                                                                column.format && typeof value === 'number'
-                                                                    ? column.format(value)
-                                                                    : value
-                                                            )}
-                                                        </TableCell>
-                                                    );
-                                                })}
-                                            </TableRow>
-                                        );
-                                    })}
+                                                            </Grid>
+                                                            {decodedToken?.userRol === 'operador' ? (
+                                                                <>
+                                                                    <Grid item>
+                                                                        <Button
+                                                                            variant="contained"
+                                                                            color="secondary"
+                                                                            size="small"
+                                                                            onClick={() => handleRejectClick(row.id)}
+                                                                        >
+                                                                            <LuDelete />
+                                                                        </Button>
+                                                                    </Grid>
+                                                                    <Grid item>
+                                                                        <Button variant="contained" color="success" size="small" onClick={() => handleEntregaClick(row.id)}>
+                                                                            <AiOutlineDeliveredProcedure />
+                                                                        </Button>
+                                                                    </Grid>
+                                                                </>
+                                                            ) : null}
+                                                        </Grid>
+                                                    ) : (
+                                                        column.format && typeof value === 'number'
+                                                            ? column.format(value)
+                                                            : value
+                                                    )}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        labelRowsPerPage='Items por página'
-                        showFirstButton={true}
-                        showLastButton={true}
-                        rowsPerPageOptions={[5, 10, 25, 100]}
+                        rowsPerPageOptions={[10, 25, 100]}
                         component="div"
-                        count={Array.isArray(ordenes) ? ordenes.length : 0}
+                        labelRowsPerPage="Filas por página:"
+                        count={totalOrden}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

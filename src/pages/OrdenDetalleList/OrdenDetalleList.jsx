@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Paper, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, TablePagination, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import { useOrdenById } from '../../shared/hooks/useordenDetalleById';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const columns = [
-    { id: 'id', label: 'ID' },
     { id: 'idOrden', label: 'ID Orden' },
-    { id: 'idProducto', label: 'ID Producto' },
-    { id: 'cantidad', label: 'Cantidad' },
+    { id: 'Producto', label: 'Producto' },    { id: 'cantidad', label: 'Cantidad' },
     { id: 'precio', label: 'Precio' },
     { id: 'subtotal', label: 'Subtotal' },
-    { id: 'Producto', label: 'Producto' },
-    { id: 'negar', label: 'Botón' }
 ];
 
 export default function OrdenDetalleList() {
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [selectedOrderId, setSelectedOrderId] = React.useState(null);
-    const { orderDetail, isLoading, error } = useOrdenById(selectedOrderId);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const location = useLocation();
     const navigate = useNavigate();
+    const { orderDetail, orders, isLoading, error, pagination, response } = location.state || {};
+
+    useEffect(() => {
+        if (!orderDetail) {
+            navigate('/orden');
+        }
+    }, [orderDetail, navigate]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -39,8 +40,12 @@ export default function OrdenDetalleList() {
     }
 
     if (error) {
-        return <div>Error: {error}</div>;
+        return <div>Error: {error} </div>;
     }
+
+    /*if (!orderDetail.orden || orderDetail.orden.length === 0) {
+        return <span>Error: No se encontraron detalles de la orden</span>;
+    }*/
 
     return (
         <Grid container spacing={2} className='row'
@@ -48,7 +53,7 @@ export default function OrdenDetalleList() {
               alignItems="flex-start"
               sx={{ minHeight: '100vh', padding: 2 }}
         >
-            <Grid xs={12} sm={12} md={12} lg={12}>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Paper sx={{width: '100%', overflow: 'hidden',
                     padding: { xs: 2, sm: 3, md: 4 },
                     margin: { xs: 1, sm: 2 },}}>
@@ -58,9 +63,27 @@ export default function OrdenDetalleList() {
                         id="tableTitle"
                         component="div"
                     >
-                        <h3 style={{fontWeight: 'bold'}}>Listado de ordenes</h3>
+
+                        <h3 style={{fontWeight: 'bold'}}>Listado de compras</h3>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} lg={6}>
+                                <Typography variant="subtitle1">Nombre: {orders?.nombre}</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <Typography variant="subtitle1">Fecha: {orders?.fecha?.split('T')[0]}</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <Typography variant="subtitle1">Email: {orders?.email}</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <Typography variant="subtitle1">Total: {orders?.total}</Typography>
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <Typography variant="subtitle1">Dirección: {orders?.direccion}</Typography>
+                            </Grid>
+                        </Grid>
                     </Typography>
-                    <TableContainer sx={{ maxHeight: 440, overflowX: 'auto' }}>
+                    <TableContainer sx={{maxHeight: 440, overflowX: 'auto'}}>
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 <TableRow>
@@ -77,7 +100,6 @@ export default function OrdenDetalleList() {
                             </TableHead>
                             <TableBody>
                                 {Array.isArray(orderDetail) && orderDetail
-                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row) => {
                                         return (
                                             <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>

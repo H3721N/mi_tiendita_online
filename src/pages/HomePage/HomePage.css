@@ -13,7 +13,22 @@
     overflow-y: auto;
 }
 
-/* Media queries for responsiveness */
+.auto-complete-custom .MuiAutocomplete-popupIndicator {
+    width: 24px; /* Adjust the width as needed */
+    height: 24px; /* Adjust the height as needed */
+    right: 8px; /* Adjust the position as needed */
+}
+
+.auto-complete-custom {
+    width: 100% !important;
+}
+
+.auto-complete-custom .MuiAutocomplete-popupIndicator {
+    width: 24px; /* Adjust the width as needed */
+    height: 24px; /* Adjust the height as needed */
+    right: 8px; /* Adjust the position as needed */
+}
+
 @media (max-width: 1200px) {
     .productGrid {
         grid-template-columns: repeat(3, 1fr);
