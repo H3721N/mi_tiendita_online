@@ -35,6 +35,7 @@ const outAnimation = keyframes`
 export const RegisterForm = () => {
     const [open, setOpen] = React.useState(false);
     const { registerUser, isRegister } = useRegister();
+
     const schema = yup.object().shape({
         nombre: yup.string().max(75).required('El nombre es necesario'),
         telefono: yup.string().matches(/^\d+$/, 'El teléfono solo debe contener números').required(),
@@ -73,7 +74,7 @@ export const RegisterForm = () => {
 
     return(
         <div className='wrapper'>
-            <h1>RegisterForm</h1>
+            <h1>Registro de usuario</h1>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className='container'>
                     <div className='row'>
@@ -177,8 +178,8 @@ export const RegisterForm = () => {
                     </div>
                     <br/>
                     <div>
-                        <Button type='submit' variant="outlined" color="neutral" onClick={handleClick}>
-                            Show Snackbar
+                        <Button type='submit' variant="outlined"  color="neutral" onClick={handleClick}>
+                            Confirmar
                         </Button>
                         <Snackbar
                             anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}

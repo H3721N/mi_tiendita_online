@@ -1,56 +1,83 @@
-import React from 'react';
-import './LoginForm.css'
-import { LuCircleUser } from "react-icons/lu";
-import { RiLockPasswordLine } from "react-icons/ri";
+import React, { useState } from 'react';
+import './LoginForm.css';
 import { useLogin } from '../../shared/hooks/useLogin';
 import { useForm } from 'react-hook-form';
-import {Checkbox, Input} from "@mui/joy";
+import { Alert, FormLabel, Input } from "@mui/joy";
 import Button from "@mui/joy/Button";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object().shape({
+    email: yup.string().email('Invalid email').required('Email is required'),
+    password: yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+});
 
 export const LoginForm = () => {
+    const [errorMessage, setErrorMessage] = useState('');
     const { login, isLoading } = useLogin();
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+        mode: 'all',
+    });
 
-    const onSubmit = handleSubmit( (data) => {
-        login(data.email, data.password);
+    const onSubmit = handleSubmit(async (data) => {
+      login(data.email, data.password).then((response) => {
+          console.log(response)
+          if (!response.success) {
+              setErrorMessage(response.message);
+          }
+      });
+
     });
 
     return (
-        <div className='login-wrapper'>
-            <form onSubmit={onSubmit}>
-                <h1>Iniciar sesi$on</h1>
-                <div className='login-input-box'>
-                    <Input className="login-input-box"
-                        placeholder="Email"
-                        color="primary"
-                        variant="outlined"
-                        {...register("email", { required: true })}
-                    />
-                    <LuCircleUser className='icon'/>
-                </div>
-                <div className='login-input-box'>
-                    <Input
-                        className="login-input-box"
-                        placeholder="Password"
-                        color="primary"
-                        variant="outlined"
-                        type="password"
-                        {...register("password", { required: true })}
-                    />
-                    <RiLockPasswordLine className='icon'/>
-                </div>
-                <div className='login-remember-forgot'>
-                    <Checkbox color="primary" className="login-remember-forgot"/>
-                    <a href='#' className='login-remember-forgot'>Forgot password?</a>
-                </div>
-                <Button type='submit' color="primary" className='login-button'>
-                    Login
-                </Button>
-                <div className='login-register-link'>
-                    <p>No posees una cuenta? <a href="/register">Registrate</a></p>
-                </div>
-            </form>
+        <div className='d-flex justify-content-center align-items-center vh-100'>
+
+            <div className='wrapper'>
+                <h1 className='text-center'>Login</h1>
+                {errorMessage && (
+                    <Alert severity="error" color="danger">{errorMessage}</Alert>
+                )}
+                <form onSubmit={onSubmit}>
+                    <div className='container'>
+                        <div className='row'>
+                            <div className='col-lg-12'>
+                                <FormLabel className='label'>Email</FormLabel>
+                                <Input
+                                    color="primary"
+                                    variant="outlined"
+                                    className="input-box"
+                                    {...register("email", { required: true })}
+                                />
+                                {errors.email && <p className='msg-error'>{errors.email.message}</p>}
+                            </div>
+                        </div>
+                        <div className='row'>
+                            <div className='col-lg-12'>
+                                <FormLabel className='label'>Password</FormLabel>
+                                <Input
+                                    color="primary"
+                                    variant="outlined"
+                                    className="input-box"
+                                    type='password'
+                                    {...register("password", { required: true })}
+                                />
+                                {errors.password && <p className='msg-error'>{errors.password.message}</p>}
+                            </div>
+                        </div>
+                        <br />
+                        <div>
+                            <Button type='submit' variant="outlined" color="neutral">
+                                Login
+                            </Button>
+                            <div className='login-register-link'>
+                                <p>No posees una cuenta? <a href="/register">Registrate</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
-

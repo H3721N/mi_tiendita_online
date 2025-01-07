@@ -60,7 +60,7 @@ export function Cart() {
                 <button onClick={clearCart}>
                     <BsCartXFill/>
                 </button>
-                <button onClick={() => handleConfirmPurchase(cart)} disabled={loading}>
+                <button onClick={() => handleConfirmPurchase(cart, clearCart)} disabled={loading}>
                     Confirmar Compra
                 </button>
             </aside>

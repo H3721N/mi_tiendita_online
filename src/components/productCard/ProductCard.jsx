@@ -46,6 +46,9 @@ export default function MediaCard({product}) {
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     marca: {product.marca}
                 </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                    precio: {product.precios}
+                </Typography>
                 <Typography variant="body2" sx={{ color: product.stock === 0 ? 'error.main' : 'text.secondary' }}>
                     {product.stock === 0 ? 'sin stock' : `stock: ${product.stock}`}
                 </Typography>
@@ -66,13 +69,4 @@ export default function MediaCard({product}) {
             </CardActions>
         </Card>
     );
-}
-
-function byteArrayToBase64(byteArray) {
-    let binary = '';
-    const len = byteArray.byteLength;
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(byteArray[i]);
-    }
-    return btoa(binary);
 }
