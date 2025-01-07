@@ -9,7 +9,7 @@ export const login = async (data) => {
     } catch (e) {
         console.error('Login request failed:', e.response ? e.response.data : e.message);
         return {
-            error: true,
+            error: e.response.data.error,
             e
         };
     }

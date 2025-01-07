@@ -15,13 +15,31 @@ export const getOrders = async (page, rowsPerPage) => {
         throw error;
     }
 };
-export const getOrderDetail = async (token, id) => {
+export const getOrderDetail = async ( id) => {
     try {
-        const response = await apiTienda.get(`/orden/${id}`, {
-            headers: {
-                'Authorization': token,
-            }
-        });
+        const response = await apiTienda.get(`/orden/${id}`)
+        console.log('Response:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export const cancelarOrden = async (id) => {
+    try {
+        const response = await apiTienda.put(`/orden/cancelar/${id}`)
+        console.log('Response:', response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error:", error);
+        throw error;
+    }
+}
+
+export const entregarOrden = async (id) => {
+    try {
+        const response = await apiTienda.put(`/orden/entregar/${id}`)
         console.log('Response:', response.data);
         return response.data;
     } catch (error) {
