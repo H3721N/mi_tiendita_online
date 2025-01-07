@@ -25,7 +25,7 @@ export const useRegister = () => {
             return;
         }
 
-        navigate("/auth", { state: { email, password } });
+        navigate("/", { state: { email, password } });
     };
 
     return { registerUser, isRegister };

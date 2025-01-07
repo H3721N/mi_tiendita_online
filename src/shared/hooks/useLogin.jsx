@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login as loginRequest } from "../../services/authService.jsx";
-import toast from 'react-hot-toast';
 
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
     const navigate = useNavigate();
 
     const decodeJWT = (token) => {
@@ -18,44 +19,42 @@ export const useLogin = () => {
 
     const login = async (email, password) => {
         if (!email || !password) {
-            toast.error('Email and password are required');
-            return;
+            throw new Error('Email and password are required');
         }
 
         setIsLoading(true);
 
-        const response = await loginRequest({
-            email,
-            password
-        });
+        try {
+            const response = await loginRequest({ email, password });
+            setIsLoading(false);
+            if (response.error) {
+                setErrorMessage(response.error);
+                throw new Error(response.error);
+            }
 
+            const token = response.data.token;
 
-        setIsLoading(false);
+            if (!token) {
+                throw new Error('Token is undefined');
+            }
 
-        if (response.error) {
-            toast.error('Error al iniciar sesión');
-            return;
+            localStorage.setItem('token', token);
+
+            const decodedToken = decodeJWT(token);
+            const userRole = decodedToken?.userRol || '';
+
+            if (userRole === 'operador') {
+                navigate('/orden', { state: { email, password } });
+            } else {
+                navigate('/home', { state: { email, password } });
+            }
+        } catch (error) {
+            setIsLoading(false);
+            setErrorMessage('Error interno del servidor');
+            return { success: false, message: error.message };
         }
-
-        const token = response.data.token;
-
-        if (!token) {
-            toast.error('Token is undefined');
-            return;
-        }
-
-        localStorage.setItem('token', token);
-
-        const decodedToken = decodeJWT(token);
-
-        const userRole = decodedToken.userRol;
-
-        if (userRole === 'Admin') {
-            navigate('/orden', { state: { email, password } });
-        } else {
-            navigate('/home', { state: { email, password } });
-        }
+        return  { success: true };
     };
 
-    return { login, isLoading };
+    return { login, isLoading, errorMessage };
 };

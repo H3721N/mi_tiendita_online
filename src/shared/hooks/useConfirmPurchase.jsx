@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as jwt_decode from "jwt-decode";
 import { getUserById } from "../../services/userService.jsx";
-import { confirmPurchase } from "../../services/carService.jsx";
+import { confirmPurchase } from "../../services/cartService.jsx";
 
 export const useConfirmPurchase = () => {
     const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export const useConfirmPurchase = () => {
 
                 const orderData = {
                     idUsuario: id,
-                    idEstado: 1, // Assuming 1 is the default state
+                    idEstado: 5,
                     fecha: new Date().toISOString().split('T')[0], // Current date
                     nombre: userData.data.nombre,
                     direccion: userData.data.direccion,
@@ -64,6 +64,8 @@ export const useConfirmPurchase = () => {
                     setError('No se pudo confirmar la compra.');
                     return;
                 }
+
+                window.location.reload();
             }
 
         } catch (error) {
