@@ -10,7 +10,7 @@ function App() {
     return (
         <Router>
             <div>
-                <ButtonAppBar />
+                {localStorage.getItem('token') && <ButtonAppBar />}
                 <CartProvider>
                     <Routes>
                         {routes.map((route, index) => (
