@@ -53,6 +53,11 @@ const ControllerProduct = () => {
         setPage(0);
     };
 
+    const formatDate = (dateString) => {
+        const options = { year: '2-digit', month: '2-digit', day: '2-digit' };
+        return new Intl.DateTimeFormat('es-ES', options).format(new Date(dateString));
+    };
+
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         const reader = new FileReader();
@@ -303,16 +308,16 @@ const ControllerProduct = () => {
                             </TableHead>
                             <TableBody>
                                 {Array.isArray(products) && products.map((row) => (
-
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                         {columns.map((column) => {
-                                            const value = row[column.id];
+                                            let value = row[column.id];
+                                            if (column.id === 'fechaCreacion') {
+                                                value = formatDate(row.fechaCreacion);
+                                            }
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
                                                     {column.id === 'button' ? (
-                                                        <TableCell>
-                                                            <Button onClick={() => handleEditClick(row)}>Editar</Button>
-                                                        </TableCell>
+                                                        <Button onClick={() => handleEditClick(row)}>Editar</Button>
                                                     ) : (
                                                         column.format && typeof value === 'number' ? column.format(value) : value
                                                     )}
@@ -320,8 +325,6 @@ const ControllerProduct = () => {
                                             );
                                         })}
                                     </TableRow>
-
-
                                 ))}
                             </TableBody>
                         </Table>
