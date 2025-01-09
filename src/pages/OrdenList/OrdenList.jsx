@@ -166,13 +166,14 @@ export default function OrdenList() {
                                                                             variant="contained"
                                                                             color="secondary"
                                                                             size="small"
+                                                                            disabled={row.idEstado !== 1}
                                                                             onClick={() => handleRejectClick(row.id)}
                                                                         >
                                                                             <LuDelete />
                                                                         </Button>
                                                                     </Grid>
                                                                     <Grid item>
-                                                                        <Button variant="contained" color="success" size="small" onClick={() => handleEntregaClick(row.id)}>
+                                                                        <Button variant="contained" color="success" size="small" disabled={row.idEstado !== 1} onClick={() => handleEntregaClick(row.id)}>
                                                                             <AiOutlineDeliveredProcedure />
                                                                         </Button>
                                                                     </Grid>

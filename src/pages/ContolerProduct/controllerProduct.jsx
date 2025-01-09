@@ -152,6 +152,8 @@ const ControllerProduct = () => {
         return <div>Error: {error.message}</div>;
     }
 
+    console.log('categories:', categories);
+
     return (
         <Grid container spacing={2} className='control-row' justifyContent="center" alignItems="flex-start" sx={{ minHeight: '100vh', padding: 3, '--Grid-columns': 'unset' }}>
             <Grid item xs={12} className='grid-crud'>
@@ -165,6 +167,7 @@ const ControllerProduct = () => {
                                     control={control}
                                     render={({ field }) => (
                                         <div className="col-lg-12">
+                                            <FormLabel className='label'>Categoria</FormLabel>
                                             <Autocomplete
                                                 {...field}
                                                 options={categories}
@@ -185,6 +188,7 @@ const ControllerProduct = () => {
                                                 disableClearable
                                                 sx={{ width: '100% !important' }}
                                             />
+                                            {errors.idCategoria && <p className='msg-error'>{errors.idCategoria.message}</p>}
                                         </div>
                                     )}
                                 />

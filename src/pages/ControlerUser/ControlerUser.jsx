@@ -88,18 +88,18 @@ const ControlerUser = () => {
             handleUpdateUser(userData);
         } else {
             try {
-                const response = await createUser({
+                const response = await createUser(
                     idRol,
-                    idEstado: 1,
-                    email: data.email,
-                    nombre: data.nombre,
-                    password: data.password,
-                    telefono: data.telefono,
-                    fechaNacimiento: data.fechaNacimiento,
-                    razonSocial: data.razonSocial,
-                    nombreComercial: data.nombreComercial,
-                    direccionEntrega: data.direccionEntrega
-                });
+                     1,
+                     data.email,
+                     data.nombre,
+                     data.password,
+                     data.telefono,
+                     data.fechaNacimiento,
+                     data.razonSocial,
+                     data.nombreComercial,
+                     data.direccionEntrega
+                );
                 console.log('User created successfully:', response);
             } catch (error) {
                 console.error('Error creating user:', error);
